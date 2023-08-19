@@ -1,0 +1,25 @@
+class Solution
+{
+    public:
+    long long countKdivPairs(int A[], int n, int K)
+    {
+          //hash map
+          unordered_map<int,int> mp;
+          long count=0;
+          for(int i=0;i<n;i++){
+               int rem=A[i]%K;
+              int check = K-rem;
+              //if rem == 0 that means if current value is 4 and it gives 0 right 
+              //  if use check  = K-0  always K right but we need another value which 
+              // gives 0 as a remainder right that's why we checks rem!=0 
+               if(rem!=0){
+                  count+=mp[check];
+               }
+               else
+               count+=mp[0];
+               mp[rem]++;
+               
+          }
+          return count;
+    }
+};
