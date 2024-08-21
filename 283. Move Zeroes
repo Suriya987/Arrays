@@ -40,3 +40,69 @@ public:
        
     }
 };
+
+
+approach :
+
+ int left=0,n=nums.size(),right=0;
+ while(left<n && right<n) 
+          {
+             if(nums[left]!=0)
+             {  
+               left++;
+               right=0;
+             }
+             else
+             {
+                if(left==n-1)
+                   return;
+                if(left>right)
+                 right=left+1;
+                if(nums[right]!=0 && right<n)
+                {
+                    nums[left]=nums[right];
+                    nums[right]=0;
+                    left++;
+                }
+                else
+                  right++;
+             }
+          }   
+
+
+approach : Optimal
+
+Time complexity :
+    O(x)  -> first zero index
+   O(N-X)  -> remaining elements 
+   overall , x+n-x => +x and -x cancelled  so totally O(N)
+Space complexity : O(1)
+
+class Solution {
+public:
+    void moveZeroes(vector<int>& nums) {
+
+         int n=nums.size(),j=-1;
+        //find the first zero index
+        for(int i=0;i<n;i++)
+        {
+            if(nums[i]==0)
+            {
+                j=i;
+                break;
+            }
+       }
+        //if zero is not there
+          if(j==-1)  return;
+
+          for(int i=j+1;i<n;i++)
+          {
+            if(nums[i]!=0)
+            {
+                nums[j]=nums[i];
+                nums[i]=0;
+                j++;
+            }
+          }            
+    }
+};
