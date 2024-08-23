@@ -1,0 +1,130 @@
+Given an m x n integer matrix matrix, if an element is 0, set its entire row and column to 0's.
+
+You must do it in place.
+
+approach :  brute
+
+Time complexity : O(MxN) + O(MxN) + O(M+N)
+Space complexity : O(MxN)
+
+class Solution {
+public:
+    void setRow(int r,vector<vector<int>>&temp,int colLength)
+    {
+         for(int i=0;i<colLength;i++)
+         {
+            temp[r][i]=0;
+         }
+    }
+    void setCol(int c,vector<vector<int>>&temp,int rowLength)
+    {
+         for(int i=0;i<rowLength;i++)
+         {
+            temp[i][c]=0;
+         }
+    }
+    void setZeroes(vector<vector<int>>& matrix) {
+         int row=matrix.size();
+         int col=matrix[0].size();
+         vector<vector<int>> temp(row,vector<int>(col,-1));
+         //check and modify the temp vector
+
+         for(int i=0;i<row;i++)
+         {
+            for(int j=0;j<col;j++)
+            {
+                if(matrix[i][j]==0)
+                {
+                    setCol(j,temp,row);
+                    setRow(i,temp,col);
+                }
+            }
+         }
+//what are the elements in the temp vector is zero mark it down only those indexes to zero in original vector
+         for(int i=0;i<row;i++)
+         {
+            for(int j=0;j<col;j++)
+            {
+                if(temp[i][j]==0)
+                {
+                     matrix[i][j]=0;
+                }
+            }
+         }
+         
+
+    }
+};
+
+Approach : Better
+
+  Using row and col tracker 
+what are the  cells iszero we update extra row to mark 0 and after that by using row[0]==0  we mark entire row matrix[i][0] to be 0
+  same follows for col 
+
+Time complexity : O(NxM)+O(NxM)
+Space complexity : O(N+M) for extra row and col space
+
+Approach: Optimal
+
+instead of creating extra col and row space for tracking we use 1st col and 1st row to track off this reduce space complexity.
+
+Time complexity : O(2x NxM)
+Space complexity : O(1)
+
+class Solution {
+public:
+     void setZeroes(vector<vector<int>>& matrix) {
+       
+            int row=matrix.size();
+            int col=matrix[0].size();
+            int col0=1;
+           for(int i=0;i<row;i++)
+           {
+                 for(int j=0;j<col;j++)
+                 {
+                    if(matrix[i][j]==0)
+                    {
+                        //for col
+                         if(j==0)
+                           col0=0;
+                         else
+                           matrix[0][j]=0;
+                      
+                       //for  row
+                         matrix[i][0]=0; 
+                    }
+                 }
+           }
+
+           for(int i=1;i<row;i++)
+           {
+            for(int j=1;j<col;j++)
+            {
+                  if(matrix[0][j]==0)
+                    matrix[i][j]=0;
+
+                  if(matrix[i][0]==0)
+                    matrix[i][j]=0;
+            }
+           }
+
+          // for 1st col
+
+          if(matrix[0][0]==0)
+          {
+             for(int i=0;i<col;i++)
+               matrix[0][i]=0;
+          }
+
+         // for 1st row
+           if(col0==0)
+           {
+            for(int i=0;i<row;i++)
+              matrix[i][0]=0;
+           }
+
+     }
+    
+};
+
