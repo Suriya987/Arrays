@@ -1,0 +1,57 @@
+Given a sorted array arr. Return the size of the modified array which contains only distinct elements.
+Note:
+1. Don't use set or HashMap to solve the problem.
+2. You must return the modified array size only where distinct elements are present and modify the original array such that all the distinct elements come 
+at the beginning of the original array.
+
+Examples :
+
+Input: arr = [2, 2, 2, 2, 2]
+Output: [2]
+Explanation: After removing all the duplicates only one instance of 2 will remain i.e. [2] so modified array will contains 2 at first position and you should 
+return 1 after modifying the array, the driver code will print the modified array elements.
+
+Input: arr = [1, 2, 4]
+Output: [1, 2, 4]
+Explation:  As the array does not contain any duplicates so you should return 3.
+
+Approach : brute force
+
+  just creating a unordered_map  and push every values as a key keep a count but after updating all the elements inside the map 
+   Again traverse the entire map and just push only value not the count 
+   At the end , we will got a array with unique value return the values count you added in the array
+
+Time complexity : O(N) -> traversing  in the map
+                  O(NxLog N) for pushing every element into the map while traversing 
+Space complexity : O(N) -> storing N elements inside the map
+
+Approach : Optimal
+
+ Time complexity : O(N)
+ Space complexity : O(1)
+
+class Solution {
+  public:
+    int remove_duplicate(vector<int> &arr) {
+         int prev=0,n=arr.size();
+         int i=0;
+         
+         for(int j=1;j<n;j++)
+         {
+             if(arr[i]!=arr[j])
+             {
+                 i++;
+                 arr[i]=arr[j];    
+             }
+         }
+         return i+1;
+}
+};
+
+  
+
+Expected Time Complexity: O(n)
+Expected Auxiliary Space: O(1)
+
+Approach : 
+
