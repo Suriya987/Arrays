@@ -1,0 +1,107 @@
+We amy asked 3 questions in based of pascal triangle
+
+Question 1 :
+
+ Print the given index.  let say they can given the particular row and col we have to print the value on that index.
+
+brute force is generating the entire pascal triangle  and print the row and col which is having value.
+
+Optimal way is using nCr formula.
+
+nCr -> n! /  r! * (n-r)!.
+
+when we compute this  
+  ex: n=5,r=3 ;   we need ex: mat[5][3]
+
+  5*4*3*2*1/ 3*2*1 * ( 5-3)!
+
+   5*4*3*2*1/ 3*2*1 * ( 2*1 )
+
+when we do this we easily get this , but ovr here there is time which is taken more to solve this
+
+Instead of we analysing that       5*4*3* (2*1) / 3*2*1 * ( 2*1 )   -> 2*1 are common .So , remove this
+  5*4*3 / 3*2*1   -> we just do for this.
+
+ans = 10 .    
+
+Code :
+
+   func(n,r)
+  {
+     int numerator=0,denominator=0;
+    //we have to run for just col 
+    for(int i=0;i<r;i++)
+    {
+       numerator=numerator*(n-i);
+       denominator=denominator*(i+1);
+    }
+      return numerator/denominator;
+
+Time complexity : O(col)
+Space complexity : O(1)
+
+
+Question 2:
+
+Print given Nth row  of the pascal triangle.
+
+Naive approach is to use the above (find the value in the particular index ) approach to call for every index that we need.
+  Time complexity : O(N*N) -> for finding which row and col needs to printed 
+                     O(N) for generating value in the row that we needs
+             Overall, O(N^3) near about
+  Space complexity : O(1)  -> we dont use extra space 
+
+Optimal approach :
+    there is a pattern  (refer in TUF)
+
+  code:
+
+  func()
+{
+long long result=1;  -> for first col in the row it is going to 1 for sure
+vector<long long> ans;
+ans.push_back(result);
+ for(int i=1;i<n;i++)
+  {
+    result=result*(n-i);
+    result=result/i;
+   ans.push_back(result);
+   }
+return ans;
+
+Time complexity : O(N)
+Space complexity : O(1)
+
+class Solution {
+public:
+    vector<int> getRow(int n) {
+        
+         vector<int> ans;
+         long long  result=1;
+         
+         ans.push_back(result);
+         
+         for(int i=1;i<=n;i++)
+         {
+             result=result*((n+1)-i);
+             result=result/i;
+             
+             ans.push_back(result);
+         }
+         
+         return ans;
+    }
+};
+
+Question 3:
+
+Print all the N rows of pascal triangle
+
+use the above approach to generate every row 
+
+Time complexity : O(N*N) 
+Space complexity : O(1)
+
+
+
+ 
