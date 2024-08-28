@@ -1,0 +1,118 @@
+Given a collection of Intervals, the task is to merge all of the overlapping Intervals.
+
+Example 1:
+
+Input:
+Intervals = {{1,3},{2,4},{6,8},{9,10}}
+Output: {{1, 4}, {6, 8}, {9, 10}}
+Explanation: Given intervals: [1,3],[2,4]
+[6,8],[9,10], we have only two overlapping
+intervals here,[1,3] and [2,4]. Therefore
+we will merge these two and return [1,4],
+[6,8], [9,10].
+Example 2:
+
+Input:
+Intervals = {{6,8},{1,9},{2,4},{4,7}}
+Output: {{1, 9}}
+Your Task:
+Complete the function overlappedInterval() that takes the list N intervals as input parameters and returns sorted list of intervals after merging.
+
+Expected Time Complexity: O(N*Log(N)).
+Expected Auxiliary Space: O(Log(N)) or O(N).
+
+Approach : Brute force
+
+Time complexity : O(N LogN) -> for sorting
+                  O(2N) -> for using loop
+              Overall , O(3N LogN)
+Space complexity : O(N) -> which is used for storing space at worst case every vector is not overlapped
+ If the ans is not counted for space then space complexity is O(1) 
+
+class Solution {
+public:
+    vector<vector<int>> overlappedInterval(vector<vector<int>>& intervals) {
+         
+         vector<vector<int>>ans;
+         sort(intervals.begin(),intervals.end());
+         int n=intervals.size();
+         int start1=0,end1=0;
+         for(int i=0;i<n;i++)
+         {
+             start1=intervals[i][0];  //--> this will takes the 1st ele in the ith vector
+              end1=intervals[i][1]; //-->this will takes the 2nd ele in the ith vector
+             
+             //check if the ans vector has value 
+             //if it has the value i need to check whether our current start is lesser
+             //if it is lesser we dont need to go for we already have that range
+             if(!ans.empty() && end1<=ans.back()[1])
+             {
+                continue;  
+             }
+             
+             for(int j=i+1;j<n;j++)
+             {
+                 int start2=intervals[j][0];
+                 int  end2=intervals[j][1];
+                 
+                 if(end1>=start2)
+                 {
+                     end1=max(end1,end2);
+                 }
+                 else
+                  break;
+             }
+             ans.push_back({start1,end1});
+             
+         }
+         return ans;
+    }
+};
+
+
+Approach : Opitmised
+
+Time complexity : O(N)
+Space complexity : O(N) or O(1)
+
+class Solution {
+public:
+    vector<vector<int>> overlappedInterval(vector<vector<int>>& intervals) {
+         
+         
+         vector<vector<int>>ans;
+         sort(intervals.begin(),intervals.end());
+          int n=intervals.size();
+          
+          
+          int start=intervals[0][0];
+         int end=intervals[0][1];
+         
+          if(n==1){
+              ans.push_back({start,end});
+              return ans;
+          }
+         for(int i=1;i<n;i++)
+         {
+             if(end>=intervals[i][0])
+             {
+                 end=max(end,intervals[i][1]);
+                 if(i==n-1)
+                 {
+                     ans.push_back({start,end});
+                 }
+             }
+             else
+             {
+                 ans.push_back({start,end});
+                 start=intervals[i][0];
+                 end=intervals[i][1];
+                 if(i==n-1)
+                 {
+                     ans.push_back({start,end});
+                 }
+             }
+         }         
+         return ans;       
+  }
+};
