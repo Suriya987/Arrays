@@ -1,0 +1,120 @@
+Given an unsorted array arr of size n of positive integers. One number 'A' from set {1, 2,....,N} is missing and one number 'B' occurs twice in array.
+Find these two numbers.
+Your task is to complete the function findTwoElement() which takes the array of integers arr and n as parameters and returns an array of integers of 
+size 2 denoting the answer (The first index contains B and second index contains A)
+
+Examples
+
+Input: n = 2 arr[] = {2, 2}
+Output: 2 1
+Explanation: Repeating number is 2 and smallest positive missing number is 1.
+Input: n = 3 arr[] = {1, 3, 3} 
+Output: 3 2
+Explanation: Repeating number is 3 and smallest positive missing number is 2.
+Expected Time Complexity: O(n)
+Expected Auxiliary Space: O(1)
+
+Approach : Using hash map
+
+Time complexity : O(3N)
+Space complexity : O(N)
+
+class Solution{
+public:
+    vector<int> findTwoElement(vector<int> arr, int n) {
+         unordered_map<int,int>mp;
+         
+         //update the n values
+         for(int i=1;i<=n;i++)
+         {
+             mp[i]=0;
+         }
+         
+         /*
+            n=3
+            1, 3, 3
+            mp = {
+                   1,0
+                   2,0
+                   3,0
+                 }
+        */
+          
+         //update the count of the num that exist
+          for(int i=0;i<n;i++)
+          {
+              mp[arr[i]]++;
+          }
+          
+          /*
+            mp= {
+                  1,1
+                  2,0  > 2 
+                  3,2  > 3
+               }
+          */
+            int notExist=0;
+            int twiceExist=0;
+          //iterate the map
+          for(auto i = mp.begin(); i != mp.end(); i++)
+          {
+              if(i->second==0)
+               notExist=i->first;
+              if(i->second==2)
+               twiceExist=i->first;
+          } 
+          
+          vector<int>result;
+          result.push_back(twiceExist);
+          result.push_back(notExist);
+          
+          return result;       
+    }
+};
+
+Approach:
+
+Time complexity : O(N LogN)-> for sorting  O(N) -> for traverse
+                    O(2N LogN)
+Space complexity : O(1)
+
+class Solution{
+public:
+    vector<int> findTwoElement(vector<int> arr, int n) {
+        
+        sort(arr.begin(),arr.end());
+        
+        int notExist=0;
+        int twiceExist=0;
+        
+        if(arr[0]!=1)
+          notExist=1;
+          
+        for(int i=1;i<n;i++)
+        {
+             if(arr[i]==arr[i-1])  // for finding the twice elements
+               {
+                   twiceExist=arr[i];
+               }
+               
+              if(arr[i]-arr[i-1]>1)
+                notExist=arr[i]-1;
+                
+               if(notExist!=0 && twiceExist!=0)
+                {
+                    break;
+                }
+                
+                
+        }
+        
+          vector<int>result;
+          result.push_back(twiceExist);
+          if(notExist==0)
+          result.push_back(n);
+          else
+          result.push_back(notExist);
+          
+          return result;      
+    }
+};
