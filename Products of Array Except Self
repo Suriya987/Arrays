@@ -1,0 +1,64 @@
+Given an integer array nums, return an array output where output[i] is the product of all the elements of nums except nums[i].
+
+Each product is guaranteed to fit in a 32-bit integer.
+
+Follow-up: Could you solve it in 
+O(n) time without using the division operation?
+
+Example 1:
+
+Input: nums = [1,2,4,6]
+
+Output: [48,24,12,8]
+Example 2:
+
+Input: nums = [-1,0,1,2,3]
+
+Output: [0,-6,0,0,0]
+Constraints:
+
+2 <= nums.length <= 1000
+-20 <= nums[i] <= 20
+
+Time complexity : O(N)
+Space complexity : O(N)+O(N) ~O(N)
+class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+        vector<int>preffix(nums.size(),0);
+        vector<int>suffix(nums.size(),0);
+         int n=nums.size();
+         int prefProduct=1,sufProduct=1;
+        for(int i=0,j=n-1;i<n && j>=0;i++,j--)
+        {
+           prefProduct=prefProduct*nums[i];
+           sufProduct=sufProduct*nums[j];
+           preffix[i]=prefProduct;
+           suffix[j]=sufProduct;
+        }
+        vector<int>result;
+        for(int i=0;i<n;i++)
+        {
+            if(i==0)
+            {
+             result.push_back(suffix[i+1]);
+            }
+            else if(i==n-1)
+            {
+              result.push_back(preffix[i-1]);
+            }
+            else
+            {
+             int val=preffix[i-1]*suffix[i+1];
+             result.push_back(val);   
+            }
+        }
+       return result;
+        // 1 2 4 6 
+
+        // pref= 1   2  8  48
+        // suf=  48 48  24  6
+        
+
+    }
+};
